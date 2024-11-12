@@ -14,12 +14,12 @@ export class StudentsController {
 
     @Post()
     createStudent(@Body() createData: CreateStudentDto) {
-
+        return this.Students.createStudent(createData)
     }
 
     @Patch(':id')
     updateStudent(@Param('id') id: string, @Body() updateData: UpdateStudentDto) {
-
+        return this.Students.updateStudent(id, updateData)
     }
 
     @Delete(':id')
