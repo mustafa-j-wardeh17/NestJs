@@ -5,11 +5,11 @@ import { StudentsService } from './students.service';
 
 @Controller('students')
 export class StudentsController {
-    constructor(private readonly Student: StudentsService) { }
+    constructor(private readonly Students: StudentsService) { }
 
     @Get()
     getAllStudents() {
-        return this.Student.getAllStudents()
+        return this.Students.getAllStudents()
     }
 
     @Post()
@@ -18,17 +18,17 @@ export class StudentsController {
     }
 
     @Patch(':id')
-    updateStudent(@Param('id') id: number, @Body() updateData: UpdateStudentDto) {
+    updateStudent(@Param('id') id: string, @Body() updateData: UpdateStudentDto) {
 
     }
 
     @Delete(':id')
-    deleteStudent(@Param('id') id: number) {
-
+    deleteStudent(@Param('id') id: string) {
+        return this.Students.deleteStudent(id)
     }
 
     @Get(':id')
-    getUserById(@Param('id') id: number) {
-
+    getUserById(@Param('id') id: string) {
+        return this.Students.getStudent(id)
     }
 }

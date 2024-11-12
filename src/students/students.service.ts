@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { first } from 'rxjs';
 
 @Injectable()
 export class StudentsService {
@@ -30,5 +29,17 @@ export class StudentsService {
 
     getAllStudents() {
         return this.Students
+    }
+
+    getStudent(id: string) {
+        return this.Students.find(student => student.id === +id)
+    }
+
+    deleteStudent(id: string) {
+        return this.Students.splice(this.Students.findIndex(student => student.id === +id), 1)
+    }
+
+    createStudent(){
+        
     }
 }
