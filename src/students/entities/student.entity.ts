@@ -7,7 +7,10 @@ export class Student {
     id: number;
 
     @Column()
-    name: string;
+    firstName: string;
+
+    @Column()
+    lastName: string;
 
     @Column()
     age: number;

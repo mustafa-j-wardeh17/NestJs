@@ -1,46 +1,27 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto/update-student.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Student } from './entities/student.entity';
 
 @Injectable()
 export class StudentsService {
+    constructor(
+        @InjectRepository(Student)
+        private StudentRepository: Repository<Student>
+    ) { }
 
-    private readonly Students: {
-        readonly id: number,
-        readonly firstName: string,
-        readonly lastName: string,
-        readonly age: number,
-        readonly address: string[]
-    }[] = [
-            {
-                id: 1,
-                firstName: "Mustafa",
-                lastName: "Wardeh",
-                age: 24,
-                address: ['palestine', 'hebron', 'alaroub']
-            },
-            {
-                id: 2,
-                firstName: "Fares",
-                lastName: "Joma",
-                age: 29,
-                address: ['palestine', 'hebron']
-            },
-            {
-                id: 3,
-                firstName: "Qais",
-                lastName: "Faleh",
-                age: 16,
-                address: ['palestine', 'jerusalem']
-            }
-        ]
-
-    getAllStudents() {
-        return this.Students
+    getAllStudents(): Promise<Student[]> {
+        return this.StudentRepository.find()
     }
 
-    getStudent(id: string) {
-        const foundStudent = this.Students.find(student => student.id === +id)
+    getStudent(id: string): Promise<Student> {
+        const foundStudent = this.StudentRepository.findOne({
+            where: {
+                id: +id
+            }
+        })
         if (foundStudent) {
             return foundStudent
         }
@@ -49,28 +30,29 @@ export class StudentsService {
         throw new NotFoundException('User Not Found')
     }
 
-    deleteStudent(id: string) {
-        const userIndex = this.Students.findIndex(student => student.id === +id)
-        if (userIndex) {
-            return this.Students.splice(userIndex, 1)
+    async deleteStudent(id: string) {
+        const deleteStudent = await this.StudentRepository.delete({
+            id: +id
+        })
+        if (deleteStudent) {
+            return `user with id = ${id} deleted successfully`
         }
-
         throw new HttpException(`User with id = ${id} Not Found`, HttpStatus.NOT_FOUND)
-
     }
 
-    createStudent(createData: CreateStudentDto) {
-        this.Students.push({ ...createData, id: this.Students.length + 1 })
-        return `Student Created Successfully`
+    createStudent(createData: CreateStudentDto): Promise<Student> {
+        const createStudent = this.StudentRepository.create({
+            ...createData
+        })
+
+        return this.StudentRepository.save(createStudent)
     }
+
     updateStudent(id: string, updateData: UpdateStudentDto) {
-        const studentIndex = this.Students.findIndex(student => student.id === +id);
+        const updateStudent = this.StudentRepository.update(id, updateData);
 
-        if (studentIndex !== -1) {
-            this.Students[studentIndex] = {
-                ...this.Students[studentIndex],  // To keep existing values
-                ...updateData  // to update the changing fields
-            };
+
+        if (updateStudent) {
             return `Student Updated Successfully`;
         }
 
