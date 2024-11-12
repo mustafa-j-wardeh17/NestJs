@@ -5,11 +5,11 @@ import { StudentsService } from './students.service';
 
 @Controller('students')
 export class StudentsController {
-    constructor(private readonly Student: StudentsService) {}
+    constructor(private readonly Student: StudentsService) { }
 
     @Get()
     getAllStudents() {
-
+        return this.Student.getAllStudents()
     }
 
     @Post()
