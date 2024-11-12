@@ -12,12 +12,12 @@ export class StudentsService {
         private StudentRepository: Repository<Student>
     ) { }
 
-    getAllStudents(): Promise<Student[]> {
-        return this.StudentRepository.find()
+    async getAllStudents(): Promise<Student[]> {
+        return await this.StudentRepository.find()
     }
 
-    getStudent(id: string): Promise<Student> {
-        const foundStudent = this.StudentRepository.findOne({
+    async getStudent(id: string): Promise<Student> {
+        const foundStudent = await this.StudentRepository.findOne({
             where: {
                 id: +id
             }
@@ -34,25 +34,25 @@ export class StudentsService {
         const deleteStudent = await this.StudentRepository.delete({
             id: +id
         })
-        if (deleteStudent) {
+        if (deleteStudent.affected === 0) {
             return `user with id = ${id} deleted successfully`
         }
         throw new HttpException(`User with id = ${id} Not Found`, HttpStatus.NOT_FOUND)
     }
 
-    createStudent(createData: CreateStudentDto): Promise<Student> {
-        const createStudent = this.StudentRepository.create({
+    async createStudent(createData: CreateStudentDto): Promise<Student> {
+        const createStudent = await this.StudentRepository.create({
             ...createData
         })
 
         return this.StudentRepository.save(createStudent)
     }
 
-    updateStudent(id: string, updateData: UpdateStudentDto) {
-        const updateStudent = this.StudentRepository.update(id, updateData);
+    async updateStudent(id: string, updateData: UpdateStudentDto) {
+        const updateStudent = await this.StudentRepository.update(id, updateData);
 
 
-        if (updateStudent) {
+        if (updateStudent.affected === 0) {
             return `Student Updated Successfully`;
         }
 
