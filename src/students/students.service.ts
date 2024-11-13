@@ -25,7 +25,7 @@ export class StudentsService {
         if (foundStudent) {
             return foundStudent
         }
-        //throw 'User No Found'
+        //throw 'User No Found' 500 server error
         //throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
         throw new NotFoundException('User Not Found')
     }
@@ -37,7 +37,7 @@ export class StudentsService {
         if (deleteStudent.affected === 0) {
             return `user with id = ${id} deleted successfully`
         }
-        throw new HttpException(`User with id = ${id} Not Found`, HttpStatus.NOT_FOUND)
+        throw new HttpException(`User with id = ${id} Not Found`, HttpStatus.NOT_FOUND) // specific http error
     }
 
     async createStudent(createData: CreateStudentDto): Promise<Student> {
