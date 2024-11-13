@@ -21,7 +21,7 @@ export class Student {
 
     @JoinTable()
     @ManyToMany(type=>Course,
-        course=>course.students,{cascade:true} //to make deletiong if delete main col delete other cols
+        course=>course.students,{cascade:true} //to make deletiong if delete main col delete conncected data for the joined table
     )
     courses:Course[];
 }
