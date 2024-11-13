@@ -13,7 +13,9 @@ export class StudentsService {
     ) { }
 
     async getAllStudents(): Promise<Student[]> {
-        return await this.StudentRepository.find()
+        return await this.StudentRepository.find({
+            relations:['courses'] // To show courses after make the relation between entities
+        })
     }
 
     async getStudent(id: string): Promise<Student> {
