@@ -17,7 +17,7 @@ export class Student {
     age: number;
 
     @Column('json', { nullable: true }) // nullable mean optional
-    address: string[]
+    address: string[];
 
     @JoinTable()
     @ManyToMany(type=>Course,
