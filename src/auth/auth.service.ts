@@ -8,16 +8,16 @@ import { sign } from 'jsonwebtoken';
 @Injectable()
 export class AuthService {
 
-    users = [
+    private users = [
         {
-            id: 'fassfa-saasdasd-dasdas-fasdas',
+            id: faker.string.uuid(),
             userName: 'MustafaWardeh',
             password: 'mustafa',
             email: "mustafa@i.sass",
             role: Role.Admin,
         },
         {
-            id: 'fassfa-saasdasd-dasdas-fasaden',
+            id: faker.string.uuid(),
             userName: 'salam',
             password: 'salam',
             email: "slam@i.sass",
@@ -36,7 +36,7 @@ export class AuthService {
 
         if (!user) throw new NotFoundException('Invalid credentials')
 
-        const token = sign({ ...user }, 'secret_pass')
+        const token = sign({ ...user }, 'secret_pass', { expiresIn: '3d' })
 
         return {
             token,
