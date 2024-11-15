@@ -2,6 +2,8 @@ import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards } from '@n
 import { AuthService } from './auth.service';
 import { AuthenticateDto } from './dto/authenticate.dto';
 import { JwtAuthGuard } from './jwt.guard';
+import { Roles } from './roles/roles.decorator';
+import { RolesGuard } from './roles/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +21,10 @@ export class AuthController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+
+    // Authorize Route For admin only
+    @Roles('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     profile(@Req() req, @Res() res) {
         return res.status(HttpStatus.OK).json(req.user);
