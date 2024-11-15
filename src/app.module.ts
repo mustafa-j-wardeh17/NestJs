@@ -4,16 +4,19 @@ import { AppService } from './app.service';
 import { StudentsModule } from './students/students.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
   imports: [
     StudentsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',  
-      port: 5433,  
+      host: 'localhost',
+      port: 5433,
       username: 'postgres',
       password: 'password',
       database: 'postgres',
@@ -21,7 +24,8 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true, // Set to false in production
     }),
     AuthModule,
-    
+    PassportModule,
+    JwtModule.register({ secret: 'secret_pass', signOptions: { expiresIn: '3d' } }),
   ],
 })
-export class AppModule {}
+export class AppModule { }
