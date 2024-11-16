@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { UsersModule } from './users/users.module';
 
 @Module({
   controllers: [AppController],
@@ -26,6 +27,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
     AuthModule,
     PassportModule,
     JwtModule.register({ secret: 'secret_pass', signOptions: { expiresIn: '3d' } }),
+    UsersModule,
   ],
 })
 export class AppModule { }
