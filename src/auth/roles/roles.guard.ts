@@ -11,7 +11,11 @@ export class RolesGuard implements CanActivate { // CanActivate : (admin || user
 
   // to check the match between roles and userRole
   matchRoles(roles: string[], userRole: string[]) {
-    return roles.some((role) => userRoles.includes(role));
+      // for single user role
+      return roles.some((role) => role === userRole)
+      
+      // if user have multiple rols
+      //return roles.some((role) => userRoles.includes(role));
   }
 
 
@@ -33,7 +37,7 @@ export class RolesGuard implements CanActivate { // CanActivate : (admin || user
     
     const user = request.user;
     // Deny access if user or user roles are missing
-    if (!user || !user.roles) {
+    if (!user || !user.role) {
          return false;
     }
 
