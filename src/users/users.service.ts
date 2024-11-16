@@ -3,7 +3,7 @@ import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class UsersService {
