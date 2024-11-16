@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 
+// To inject routes by use guard for authorization
 @Injectable()
 export class RolesGuard implements CanActivate { // CanActivate : (admin || user) will ask CanActivate to reach this route and CanActivate allow or disallow to reach
 
