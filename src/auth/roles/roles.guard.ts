@@ -10,8 +10,8 @@ export class RolesGuard implements CanActivate { // CanActivate : (admin || user
   constructor(private reflector: Reflector) { }
 
   // to check the match between roles and userRole
-  matchRoles(roles: string[], userRole: string) {
-    return roles.some((role) => role === userRole)
+  matchRoles(roles: string[], userRole: string[]) {
+    return roles.some((role) => userRoles.includes(role));
   }
 
 
@@ -32,7 +32,10 @@ export class RolesGuard implements CanActivate { // CanActivate : (admin || user
     
     
     const user = request.user;
-
+    // Deny access if user or user roles are missing
+    if (!user || !user.roles) {
+         return false;
+    }
 
     return this.matchRoles(roles, user.role);
   }
